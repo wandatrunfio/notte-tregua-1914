@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La notte in cui tacquero le armi</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:radial-gradient(circle at 50% 20%,#1d3c6e,#0b1730 70%) #0b1730;color:#f3f6fc;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;align-items:center;padding:clamp(16px,3vh,36px) 20px}
+header{display:flex;align-items:center;gap:18px;width:100%;max-width:1000px;margin-bottom:clamp(14px,2.5vh,28px)}
+#logo{height:clamp(84px,14vh,140px);width:clamp(84px,14vh,140px);flex:none;border-radius:50%;object-fit:cover;box-shadow:0 0 0 3px rgba(255,255,255,.25)}
+h1{font-size:clamp(26px,3.6vw,48px);font-weight:800;line-height:1.1;text-wrap:balance}
+.sub{color:#b5c3dc;font-size:clamp(15px,1.5vw,21px);margin-top:6px}
+video{width:100%;max-width:1000px;max-height:56vh;border-radius:20px;border:2px solid rgba(255,255,255,.16);background:#0b1730;display:block}
+.play{display:inline-block;margin-top:clamp(16px,3vh,30px);background:#ffd166;color:#1a1300;font-weight:800;font-size:clamp(24px,3vw,40px);padding:18px 54px;border-radius:20px;text-decoration:none}
+.play:hover{background:#ffe08f}
+.play:focus-visible{outline:4px solid #fff;outline-offset:4px}
+p.txt{max-width:820px;text-align:center;color:#d5deee;font-size:clamp(16px,1.6vw,22px);line-height:1.45;margin-top:clamp(12px,2vh,22px)}
+footer{margin-top:auto;padding-top:24px;color:#b5c3dc;font-size:14px;text-align:center}
+</style></head><body>
+<header>
+  <img id="logo" src="logo.png" alt="Logo di Wanda Trunfio">
+  <div><h1>La notte in cui tacquero le armi</h1>
+  <div class="sub">Un gioco per tutta la classe, da fare insieme alla LIM · circa 15 minuti</div></div>
+</header>
+<video controls preload="metadata" playsinline src="Bip_introduce_il_gioco.mp4"></video>
+<a class="play" href="gioco.html">Gioca</a>
+<p class="txt">Natale 1914: soldati nemici escono disarmati dalle trincee e si stringono la mano. Guardate il video di Bip, poi aiutate i due soldati a incontrarsi, un passo alla volta.</p>
+<footer>Creato da Wanda Trunfio</footer>
+<script>
+// Il logo si chiama logo.png; se non c'è prova logo.jpg e logo.jpeg, altrimenti lo nasconde.
+(function(){var l=document.getElementById('logo'),alt=['logo.jpg','logo.jpeg'];
+ l.onerror=function(){var n=alt.shift();if(n)l.src=n;else l.style.display='none'};})();
+</script>
+</body></html>

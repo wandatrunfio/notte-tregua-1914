@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>La notte in cui tacquero le armi</title>
+<style>
+:root{--bg:#0b1730;--panel:#132446;--panel2:#1b3160;--ink:#f3f6fc;--mute:#b5c3dc;--gold:#ffd166;--red:#c8324a;--green:#2a9d5c;--line:rgba(255,255,255,.16)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{display:flex;flex-direction:column;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer;border:0}
+button:focus-visible,input:focus-visible{outline:4px solid var(--gold);outline-offset:3px}
+header{display:flex;align-items:center;gap:16px;padding:10px 22px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+header h1{font-size:clamp(18px,2vw,26px);font-weight:800;text-wrap:balance}
+.phase{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.phase span{font-size:clamp(13px,1.2vw,17px);padding:6px 14px;border-radius:999px;background:var(--panel);color:var(--mute);font-weight:600}
+.phase span.on{background:var(--gold);color:#1a1300}
+.scw{position:relative}
+#scene{width:100%;display:block;height:20vh;min-height:120px;background:#081430}
+#stepTxt{position:absolute;top:8px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:clamp(14px,1.4vw,20px);font-weight:700;padding:4px 16px;border-radius:999px;background:rgba(8,18,40,.78);color:#fff}
+.fig{transition:transform 1.1s cubic-bezier(.3,.7,.3,1)}
+#dawn{transition:opacity 1.2s}
+main{flex:1;width:100%;max-width:1500px;margin:0 auto;padding:clamp(12px,2vh,26px) clamp(14px,2.5vw,40px);display:flex;flex-direction:column;gap:clamp(10px,1.6vh,20px)}
+.guide{display:flex;gap:18px;align-items:center}
+.guide svg{width:clamp(70px,7vw,110px);flex:none}
+.bubble{background:var(--panel);border:2px solid var(--line);border-radius:22px;padding:14px 22px;font-size:clamp(18px,1.9vw,28px);line-height:1.3;font-weight:600;flex:1}
+.bubble small{display:block;font-size:.72em;font-weight:500;color:var(--mute);margin-top:4px}
+.big{font-size:clamp(17px,1.7vw,25px);line-height:1.4}
+.btn{background:var(--gold);color:#1a1300;font-weight:800;font-size:clamp(18px,1.9vw,28px);padding:14px 30px;border-radius:16px;min-height:56px}
+.btn.sec{background:var(--panel2);color:var(--ink);border:2px solid var(--line);font-weight:700}
+.btn:disabled{opacity:.4;cursor:default}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.rule{background:var(--panel);border-radius:18px;padding:16px 20px;border:1px solid var(--line)}
+.rule b{display:block;color:var(--gold);font-size:clamp(17px,1.6vw,23px);margin-bottom:4px}
+.rule p{font-size:clamp(15px,1.4vw,20px);line-height:1.35;color:var(--ink)}
+/* timeline */
+.tl{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,2vw,30px);align-items:start}
+.col h2{font-size:clamp(15px,1.4vw,20px);color:var(--mute);font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.card{display:block;width:100%;text-align:left;background:var(--panel2);border:2px solid var(--line);border-radius:14px;padding:6px 14px;font-size:clamp(14px,1.35vw,20px);line-height:1.22;font-weight:600;margin-bottom:6px;min-height:50px}
+.card:hover{border-color:var(--gold)}
+.slot{display:flex;gap:12px;align-items:center;margin-bottom:6px;min-height:50px;border:2px dashed var(--line);border-radius:14px;padding:4px 12px 4px 8px;font-size:clamp(14px,1.35vw,20px);line-height:1.22;font-weight:600;width:100%;text-align:left;background:transparent}
+.slot .n{flex:none;width:34px;height:34px;border-radius:50%;background:var(--panel2);display:grid;place-items:center;font-weight:800}
+.slot.full{border-style:solid;background:var(--panel)}
+.slot.ok{border-color:var(--green);background:rgba(42,157,92,.22)}
+.slot.ok .n{background:var(--green)}
+.slot.next{border-color:var(--gold)}
+/* quiz */
+.q{font-size:clamp(22px,2.5vw,38px);font-weight:800;line-height:1.2;text-wrap:balance}
+.opts{display:grid;gap:12px}
+.opt{display:flex;gap:16px;align-items:center;text-align:left;background:var(--panel2);border:3px solid var(--line);border-radius:18px;padding:14px 20px;font-size:clamp(18px,2vw,30px);font-weight:700;line-height:1.25;min-height:68px}
+.opt .l{flex:none;width:48px;height:48px;border-radius:12px;background:var(--bg);display:grid;place-items:center;color:var(--gold);font-weight:800}
+.opt:hover:not(:disabled){border-color:var(--gold)}
+.opt.good{border-color:var(--green);background:rgba(42,157,92,.28)}
+.opt.bad{border-color:var(--red);background:rgba(200,50,74,.22);opacity:.6}
+.fb{background:var(--panel);border-left:8px solid var(--gold);border-radius:14px;padding:14px 20px;font-size:clamp(17px,1.7vw,25px);line-height:1.35}
+.fb.good{border-color:var(--green)}.fb.bad{border-color:var(--red)}
+.timer{font-variant-numeric:tabular-nums;min-width:170px}
+/* final */
+.refl{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{background:var(--panel2);border:2px solid var(--line);border-radius:999px;padding:10px 20px;font-size:clamp(16px,1.5vw,22px);font-weight:600;min-height:48px}
+.chip.sel{background:var(--gold);color:#1a1300;border-color:var(--gold)}
+input[type=text]{font:inherit;font-size:clamp(16px,1.5vw,22px);padding:12px 16px;border-radius:14px;border:2px solid var(--line);background:var(--panel);color:var(--ink);flex:1;min-width:240px}
+.pact{background:var(--red);border-radius:20px;padding:18px 26px;font-size:clamp(20px,2.2vw,34px);font-weight:800;line-height:1.25;text-align:center;text-wrap:balance}
+footer{padding:10px 22px;font-size:13px;color:var(--mute);border-top:1px solid var(--line)}
+footer a{color:var(--mute)}
+@media (max-width:760px){.tl{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.fig,#dawn{transition:none}}
+</style></head><body>
+<header>
+  <h1>La notte in cui tacquero le armi</h1>
+  <div class="phase" id="phase"></div>
+</header>
+
+<div class="scw"><svg id="scene" viewBox="0 0 1000 150" preserveAspectRatio="xMidYMax slice" role="img" aria-label="Due soldati si avvicinano passo dopo passo nella terra di nessuno">
+  <defs>
+    <linearGradient id="night" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#081430"/><stop offset="1" stop-color="#23406f"/></linearGradient>
+    <linearGradient id="day" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fb2e6"/><stop offset="1" stop-color="#ffe2c6"/></linearGradient>
+  </defs>
+  <rect width="1000" height="150" fill="url(#night)"/>
+  <g id="stars"></g>
+  <rect id="dawn" width="1000" height="150" fill="url(#day)" opacity="0"/>
+  <path d="M0 116 Q250 100 500 112 T1000 108 V150 H0Z" fill="#e9f0fa"/>
+  <path d="M0 122 Q40 110 64 114 Q80 116 84 132 V150 H0Z" fill="#b9c8de"/>
+  <path d="M1000 120 Q960 108 936 112 Q920 114 916 130 V150 H1000Z" fill="#b9c8de"/>
+  <g id="dots"></g>
+  <g id="figL" class="fig"></g><g id="figR" class="fig"></g>
+</svg><div id="stepTxt" aria-live="polite"></div></div>
+
+<main id="main"></main>
+<footer><b style="color:#f3f6fc">Creato da Wanda Trunfio</b> · Fonti: Imperial War Museums, «The Real Story of the Christmas Truce» (iwm.org.uk) · Geopop, «Cosa accadde davvero durante la tregua di Natale del 1914»</footer>
+
+<script>
+const $=s=>document.querySelector(s);
+const TOTAL=8;
+const EVENTS=[
+ "Dicembre 1914: da mesi i soldati vivono nel fango e nel freddo delle trincee.",
+ "Vigilia di Natale: sulle trincee tedesche compaiono alberelli illuminati da candele.",
+ "I soldati tedeschi intonano canti di Natale; gli inglesi rispondono cantando.",
+ "Mattino di Natale: alcuni soldati escono disarmati nella «terra di nessuno».",
+ "I nemici si stringono la mano e si scambiano piccoli doni.",
+ "Nei giorni seguenti arriva l’ordine di riprendere a combattere: la guerra durerà fino al 1918."
+];
+const QUIZ=[
+ {q:"Chi aveva ordinato la tregua di Natale?",o:["I generali dei due eserciti","Nessuno: nacque dai soldati stessi","I re dei Paesi in guerra"],a:1,
+  why:"Fu una tregua spontanea e non ufficiale. Anzi, molti comandanti non la approvarono affatto."},
+ {q:"Che cosa si scambiarono i soldati nella terra di nessuno?",o:["Le armi","Le bandiere","Piccoli doni: cibo, cioccolata, bottoni delle divise"],a:2,
+  why:"Si regalarono quello che avevano in tasca: cibo, cioccolata, bottoni e auguri. Alcuni scattarono perfino fotografie insieme."},
+ {q:"Quale canto è diventato il simbolo di quella notte?",o:["«Stille Nacht», cioè «Astro del ciel»","«Jingle Bells»","«Tu scendi dalle stelle»"],a:0,
+  why:"«Stille Nacht» è un canto nato in Austria nel 1818. Gli inglesi lo conoscevano come «Silent Night»: stessa melodia, lingue diverse."},
+ {q:"La tregua avvenne lungo tutto il fronte?",o:["Sì, dappertutto","No: solo in alcuni tratti, altrove si continuò a combattere","Solo nelle città"],a:1,
+  why:"Non fu rispettata ovunque: in altri punti del fronte, anche il giorno di Natale, si combatté."},
+ {q:"I soldati italiani parteciparono alla tregua del 1914?",o:["Sì, insieme agli inglesi","Sì, insieme ai tedeschi","No: l’Italia non era ancora in guerra"],a:2,
+  why:"Nel dicembre 1914 l’Italia era neutrale: entrò in guerra solo nel maggio 1915."},
+ {q:"Negli anni successivi della guerra, una tregua così grande si ripeté?",o:["No, non si ripeté più","Sì, ogni Natale fino al 1918","Sì, ma solo d’estate"],a:0,
+  why:"Un evento di queste dimensioni non accadde più. Per questo il Natale del 1914 è rimasto nella memoria."}
+];
+const GESTI=["Fare pace dopo un litigio","Invitare chi resta da solo","Ascoltare fino in fondo chi non la pensa come noi","Dire «scusa» per primi"];
+
+let S={screen:"intro",steps:0,pool:[],slots:Array(6).fill(null),locked:Array(6).fill(false),tries:0,
+       queue:QUIZ.map((_,i)=>i),qi:0,wrong:[],done:false,first:0,missed:new Set(),gesto:"",timer:null,left:0};
+
+/* ---------- scene ---------- */
+function soldier(coat,hat,dir){return `
+  <ellipse cx="0" cy="118" rx="44" ry="8" fill="rgba(40,60,90,.3)"/>
+  <rect x="-20" y="60" width="16" height="56" rx="7" fill="#4a4f5c"/><rect x="4" y="60" width="16" height="56" rx="7" fill="#4a4f5c"/>
+  <path d="M-30 -30 Q0 -44 30 -30 L36 78 H-36Z" fill="${coat}"/>
+  <g class="arm" opacity="0"><rect x="${dir>0?10:-70}" y="-14" width="60" height="16" rx="8" fill="${coat}"/><circle cx="${dir*70}" cy="-6" r="9" fill="#f2c9a5"/></g>
+  <rect x="-32" y="-34" width="64" height="16" rx="8" fill="#c8324a"/>
+  <circle cx="0" cy="-62" r="30" fill="#f2c9a5"/>
+  <circle cx="${dir*10-7}" cy="-64" r="3.5" fill="#333"/><circle cx="${dir*10+9}" cy="-64" r="3.5" fill="#333"/>
+  <path d="M${dir*10-8} -50 q9 8 18 0" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M-32 -74 Q0 -112 32 -74Z" fill="${hat}"/><rect x="-36" y="-78" width="72" height="9" rx="4" fill="${hat}"/>`}
+$("#figL").innerHTML=soldier("#8a7a4f","#6f6240",1);
+$("#figR").innerHTML=soldier("#6f8088","#56666d",-1);
+(function(){let s="",r=11;const rnd=()=>{r=(r*16807)%2147483647;return r/2147483647};
+  for(let i=0;i<45;i++)s+=`<circle cx="${(rnd()*1000)|0}" cy="${(40+rnd()*60)|0}" r="${(0.8+rnd()*1.4).toFixed(1)}" fill="#fff" opacity="${(.4+rnd()*.6).toFixed(2)}"/>`;
+  $("#stars").innerHTML=s;
+  let d="";for(let i=1;i<TOTAL;i++){d+=`<circle cx="${120+i*(335/TOTAL)}" cy="143" r="4" fill="#9fb2cf"/><circle cx="${880-i*(335/TOTAL)}" cy="143" r="4" fill="#9fb2cf"/>`}
+  $("#dots").innerHTML=d})();
+function drawScene(){
+  const k=S.steps/TOTAL, xl=120+345*k, xr=880-345*k;
+  $("#figL").style.transform=`translate(${xl}px,86px) scale(.45)`;
+  $("#figR").style.transform=`translate(${xr}px,86px) scale(.45)`;
+  $("#dawn").setAttribute("opacity",k.toFixed(2));
+  const met=S.steps>=TOTAL;
+  document.querySelectorAll(".arm").forEach(a=>a.setAttribute("opacity",met?1:0));
+  const t=$("#stepTxt");t.style.left=met?"28%":"50%";t.textContent=met?"Si sono incontrati!":`Passi verso l’incontro: ${S.steps} su ${TOTAL}`;
+}
+/* ---------- helpers ---------- */
+function bip(){return `<svg viewBox="40 20 250 370" aria-hidden="true">
+  <rect x="112" y="340" width="26" height="40" rx="10" fill="#c3cfde"/><rect x="162" y="340" width="26" height="40" rx="10" fill="#c3cfde"/>
+  <rect x="52" y="252" width="46" height="22" rx="11" fill="#c3cfde"/><rect x="202" y="252" width="46" height="22" rx="11" fill="#c3cfde"/>
+  <rect x="88" y="232" width="124" height="118" rx="30" fill="#e9eff6"/><circle cx="150" cy="296" r="16" fill="#38d6c4"/>
+  <rect x="60" y="92" width="180" height="140" rx="44" fill="#f4f8fc"/><rect x="80" y="116" width="140" height="92" rx="30" fill="#12304d"/>
+  <ellipse cx="118" cy="152" rx="13" ry="16" fill="#5ff0e0"/><ellipse cx="182" cy="152" rx="13" ry="16" fill="#5ff0e0"/>
+  <path d="M132 182 Q150 198 168 182" stroke="#5ff0e0" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <path d="M70 100 Q110 20 196 38 Q236 50 250 96 Q160 70 70 100Z" fill="#d7263d"/>
+  <path d="M196 38 Q250 30 268 78" stroke="#d7263d" stroke-width="26" fill="none" stroke-linecap="round"/><circle cx="270" cy="84" r="17" fill="#fff"/>
+  <rect x="56" y="84" width="188" height="28" rx="14" fill="#fff"/><rect x="82" y="222" width="136" height="26" rx="13" fill="#2a9d5c"/>
+  <rect x="176" y="236" width="26" height="62" rx="10" fill="#2a9d5c"/></svg>`}
+function guide(txt,small){return `<div class="guide">${bip()}<div class="bubble">${txt}${small?`<small>${small}</small>`:""}</div></div>`}
+function phases(){const names=["Istruzioni","1 · Ricostruisci la notte","2 · Passo dopo passo","3 · La nostra tregua"];
+  const cur={intro:0,timeline:1,quiz:2,final:3}[S.screen];
+  $("#phase").innerHTML=names.map((n,i)=>`<span class="${i===cur?"on":""}">${n}</span>`).join("")}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function stopTimer(){if(S.timer){clearInterval(S.timer);S.timer=null}}
+function render(){stopTimer();phases();drawScene();({intro,timeline,quiz,final})[S.screen]();window.scrollTo(0,0)}
+
+/* ---------- intro ---------- */
+function intro(){
+  $("#main").innerHTML=guide("Missione: far incontrare i due soldati al centro della «terra di nessuno».",
+   "Servono 8 passi. Ogni prova superata dalla classe li avvicina, e intanto la notte diventa giorno.")+`
+  <div class="rules">
+   <div class="rule"><b>Due squadre, un solo obiettivo</b><p>Dividetevi in due squadre, una per trincea: a sinistra e a destra dell’aula. Non si gioca contro: si vince solo insieme.</p></div>
+   <div class="rule"><b>Si risponde solo se si è d’accordo</b><p>Ogni squadra discute 30 secondi e il portavoce mostra la scelta con le dita: 1, 2 o 3. Se le squadre non sono d’accordo, si parlano finché trovano un’intesa.</p></div>
+   <div class="rule"><b>Un inviato alla LIM</b><p>A ogni turno un alunno diverso, una volta di una squadra e una volta dell’altra, tocca lo schermo. L’insegnante legge e tiene il tempo.</p></div>
+  </div>
+  <div class="row"><button class="btn" id="go">Cominciamo</button><span class="big" style="color:var(--mute)">Durata: circa 15 minuti</span></div>`;
+  $("#go").onclick=()=>{S.screen="timeline";do{S.pool=shuffle([0,1,2,3,4,5])}while(S.pool.every((v,i)=>v===i));render()};
+}
+/* ---------- phase 1 ---------- */
+function timeline(){
+  const nextEmpty=S.slots.indexOf(null), full=nextEmpty===-1, allOk=S.locked.every(Boolean);
+  $("#main").innerHTML=guide(allOk?"Perfetto: avete ricostruito la notte di Natale del 1914. Due passi avanti!":"Prova 1 · Che cosa è successo prima? Rimettete i fatti in ordine.",
+    allOk?"":"Toccate le schede nell’ordine in cui pensate siano accadute. Toccate una casella piena per svuotarla.")+`
+  <div class="tl">
+   <div class="col"><h2>Schede da ordinare</h2><div id="pool">${S.pool.map(i=>`<button class="card" data-i="${i}">${EVENTS[i]}</button>`).join("")||`<p class="big" style="color:var(--mute)">Tutte le schede sono state posizionate.</p>`}</div></div>
+   <div class="col"><h2>Linea del tempo</h2>${S.slots.map((v,k)=>`<button class="slot ${v!==null?"full":""} ${S.locked[k]?"ok":""} ${k===nextEmpty?"next":""}" data-k="${k}" ${v===null||S.locked[k]?"disabled":""}><span class="n">${k+1}</span><span>${v!==null?EVENTS[v]:""}</span></button>`).join("")}</div>
+  </div>
+  <div class="row">${allOk?`<button class="btn" id="nx">Avanti: prova 2</button>`:`<button class="btn" id="chk" ${full?"":"disabled"}>Controlla l’ordine</button>`}
+   <span class="big" id="msg" style="color:var(--mute)">${S.tries&&!allOk?"Le schede giuste restano verdi. Le altre sono tornate a sinistra: riprovate!":""}</span></div>`;
+  document.querySelectorAll("#pool .card").forEach(b=>b.onclick=()=>{const i=+b.dataset.i,k=S.slots.indexOf(null);if(k<0)return;S.slots[k]=i;S.pool=S.pool.filter(x=>x!==i);render()});
+  document.querySelectorAll(".slot").forEach(b=>b.onclick=()=>{const k=+b.dataset.k;if(S.locked[k]||S.slots[k]===null)return;S.pool.push(S.slots[k]);S.slots[k]=null;render()});
+  if($("#chk"))$("#chk").onclick=()=>{S.tries++;S.slots.forEach((v,k)=>{if(v===k)S.locked[k]=true;else{S.pool.push(v);S.slots[k]=null}});
+    if(S.locked.every(Boolean))S.steps=2;render()};
+  if($("#nx"))$("#nx").onclick=()=>{S.screen="quiz";render()};
+}
+/* ---------- phase 2 ---------- */
+function quiz(){
+  const id=S.queue[S.qi], Q=QUIZ[id], n=S.qi+1;
+  $("#main").innerHTML=`
+  <div class="row"><span class="big" style="color:var(--gold);font-weight:800">Domanda ${n} di ${QUIZ.length}</span>
+   <button class="btn sec timer" id="tm">Avvia 30 secondi</button></div>
+  <div class="q">${Q.q}</div>
+  <div class="opts">${Q.o.map((t,i)=>`<button class="opt ${S.done&&i===Q.a?"good":""} ${S.wrong.includes(i)?"bad":""}" data-i="${i}" ${S.done||S.wrong.includes(i)?"disabled":""}><span class="l">${i+1}</span><span>${t}</span></button>`).join("")}</div>
+  <div id="fb">${S.done?`<div class="fb good"><b>Giusto! Un passo avanti.</b> ${Q.why}</div>`:S.wrong.length?`<div class="fb bad"><b>Non è questa.</b> Le due squadre si confrontano ancora e scelgono un’altra risposta.</div>`:`<p class="big" style="color:var(--mute)">Le squadre discutono, i portavoce mostrano 1, 2 o 3 con le dita. Si tocca la risposta solo quando le due squadre sono d’accordo.</p>`}</div>
+  ${S.done?`<div class="row"><button class="btn" id="nx">${n<QUIZ.length?"Prossima domanda":"Guardate che cosa succede"}</button></div>`:""}`;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{const i=+b.dataset.i;
+    if(i===Q.a){S.done=true;if(!S.wrong.length)S.first++;S.steps=Math.min(TOTAL,S.steps+1)}else{S.wrong.push(i)}render()});
+  $("#tm").onclick=()=>{stopTimer();S.left=30;const b=$("#tm");b.textContent="30 secondi";
+    S.timer=setInterval(()=>{S.left--;const e=$("#tm");if(!e){stopTimer();return}
+      if(S.left<=0){stopTimer();e.textContent="Tempo scaduto!"}else e.textContent=S.left+" secondi"},1000)};
+  if($("#nx"))$("#nx").onclick=()=>{S.done=false;S.wrong=[];if(S.qi+1<QUIZ.length)S.qi++;else S.screen="final";render()};
+}
+/* ---------- final ---------- */
+function final(){
+  $("#main").innerHTML=guide("Ce l’avete fatta: si sono incontrati, e la notte è diventata giorno.",
+    `Risposte giuste al primo colpo: ${S.first} su ${QUIZ.length}. Nel 1914 nessuno ordinò la tregua: fu una scelta. Ora tocca a voi.`)+`
+  <div class="refl">
+   <div class="rule"><b>Parliamone · 1</b><p>Perché, secondo voi, quei soldati hanno smesso di vedersi come nemici?</p></div>
+   <div class="rule"><b>Parliamone · 2</b><p>Per accordarvi sulle risposte avete dovuto ascoltarvi. È stato facile o difficile?</p></div>
+   <div class="rule"><b>Parliamone · 3</b><p>Che cosa ci vuole per fare il primo passo verso qualcuno?</p></div>
+  </div>
+  <div class="big" style="font-weight:800;color:var(--gold)">La nostra tregua: scegliete insieme un gesto per oggi, oppure scrivetene uno vostro.</div>
+  <div class="chips">${GESTI.map(g=>`<button class="chip ${S.gesto===g?"sel":""}">${g}</button>`).join("")}</div>
+  <div class="row"><input type="text" id="own" maxlength="90" placeholder="Il nostro gesto…" aria-label="Scrivete il vostro gesto"><button class="btn sec" id="ok">Scegliamo questo</button></div>
+  ${S.gesto?`<div class="pact">Il patto della classe: oggi ci impegniamo a<br>«${S.gesto.replace(/[<>&]/g,"")}»</div>`:""}
+  <div class="row"><button class="btn sec" id="again">Gioca di nuovo</button></div>`;
+  document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{S.gesto=c.textContent;render()});
+  $("#ok").onclick=()=>{const v=$("#own").value.trim();if(v){S.gesto=v;render()}};
+  $("#own").onkeydown=e=>{if(e.key==="Enter")$("#ok").click()};
+  $("#again").onclick=()=>{S={screen:"intro",steps:0,pool:[],slots:Array(6).fill(null),locked:Array(6).fill(false),tries:0,queue:QUIZ.map((_,i)=>i),qi:0,wrong:[],done:false,first:0,missed:new Set(),gesto:"",timer:null,left:0};render()};
+}
+render();
+</script></body></html>
